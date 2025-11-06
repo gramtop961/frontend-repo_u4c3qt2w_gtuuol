@@ -1,28 +1,51 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import { About, Academics, Facilities, Faculty, Admissions, Gallery, EnquiryForm, Contact, Footer } from './components/Sections';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [page, setPage] = useState('Home');
+
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleNavigate = (key) => {
+    setPage(key);
+    // Map keys to sections
+    if (key === 'Home') window.scrollTo({ top: 0, behavior: 'smooth' });
+    else if (key === 'About') scrollTo('about');
+    else if (key === 'Academics') scrollTo('academics');
+    else if (key.startsWith('Academics:')) scrollTo('academics');
+    else if (key === 'Facilities') scrollTo('facilities');
+    else if (key === 'Faculty') scrollTo('faculty');
+    else if (key === 'Admissions') scrollTo('admissions');
+    else if (key === 'Gallery') scrollTo('gallery');
+    else if (key === 'Enquiry') scrollTo('enquiry');
+    else if (key === 'Contact') scrollTo('contact');
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen font-sans">
+      <style>{`
+        :root { --school-sky: #0ea5e9; --school-green: #10b981; }
+        .font-serif { font-family: 'Playfair Display', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif; }
+        .font-sans { font-family: 'Lato', 'Open Sans', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; }
+      `}</style>
+      <Navbar currentPage={page} onNavigate={handleNavigate} />
+      <main>
+        <Hero onPrimary={() => handleNavigate('Admissions')} />
+        <About />
+        <Academics />
+        <Facilities />
+        <Faculty />
+        <Admissions />
+        <Gallery />
+        <EnquiryForm />
+        <Contact />
+      </main>
+      <Footer />
     </div>
-  )
+  );
 }
-
-export default App
